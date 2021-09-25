@@ -24,7 +24,7 @@ mixin CircleButtonAnimation<T extends StatefulWidget>
         parent: controller,
         curve: Interval(
           0,
-          0.9,
+          0.2,
           curve: curve ?? Curves.easeOut,
         ),
       ),

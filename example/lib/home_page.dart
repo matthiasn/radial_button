@@ -169,29 +169,6 @@ class _HomePageState extends State<HomePage> {
                 curveAnim: Curves.elasticOut,
               ),
             ),
-            Positioned(
-              bottom: 100,
-              right: 10,
-              child: Container(
-                height: 300,
-                width: 300,
-                child: CircleFloatingButton.completeCircle(
-                  key: key03,
-                  items: itemsToBodyComplete,
-                  color: Colors.blue,
-                  icon: Icons.adb,
-                  duration: Duration(milliseconds: 1000),
-                  curveAnim: Curves.elasticOut,
-                  child: Container(
-                    color: Colors.red,
-                    child: CircleAvatar(
-                      child: Text("Casa"),
-                      maxRadius: 30,
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -200,7 +177,7 @@ class _HomePageState extends State<HomePage> {
         items: itemsActionBar,
         color: Colors.redAccent,
         icon: Icons.ac_unit,
-        duration: Duration(milliseconds: 1000),
+        duration: Duration(milliseconds: 100),
         curveAnim: Curves.ease,
       ),
     );
