@@ -7,43 +7,44 @@ class CircleFloatingButton extends StatefulWidget {
   final List<Widget> items;
   final double radius;
   final Position position;
-  final double right;
-  final double top;
+  // final double right;
+  // final double top;
   final bool completeCircle;
   final CircleType type;
   final Duration duration;
-  final Color buttonColor;
+  final Color? buttonColor;
   final IconData buttonIcon;
-  final Curve curve;
+  final Curve curve ;
   final bool opacity;
-  final Widget child;
+  final Widget? child;
 
   CircleFloatingButton(
-      {Key key,
-      this.items,
+      {Key? key,
+      required this.items,
       this.radius = 100,
       this.position = Position.right,
-      this.right,
-      this.top,
+      // required this.right,
+      // required this.top,
       this.completeCircle = false,
       this.duration = const Duration(milliseconds: 300),
-      this.type,
-      this.buttonColor,
-      this.buttonIcon,
-      this.curve,
-      this.opacity, this.child})
+      required this.type,
+      required this.buttonColor,
+      required this.buttonIcon,
+      this.curve = Curves.elasticOut,
+      required this.opacity,
+      this.child})
       : super(key: key ?? UniqueKey());
 
   factory CircleFloatingButton.floatingActionButton(
-      {List<Widget> items,
+      {required List<Widget> items,
       double radius = 100,
-      Duration duration,
-      IconData icon,
-      Color color,
-      Curve curveAnim,
-      bool useOpacity,
-      Key key,
-      Widget child}) {
+      Duration duration = const Duration(microseconds: 200),
+      required IconData icon,
+      Color? color,
+      Curve curveAnim = Curves.elasticOut,
+      bool useOpacity = false,
+      Key? key,
+      Widget? child}) {
     return CircleFloatingButton(
       items: items,
       key: key,
@@ -60,51 +61,51 @@ class CircleFloatingButton extends StatefulWidget {
   }
 
   factory CircleFloatingButton.completeCircle(
-      {@required List<Widget> items,
+      {required List<Widget> items,
       double radius = 100,
-      Duration duration,
-      IconData icon,
-      Color color,
-      Curve curveAnim,
-      bool useOpacity,
-      Key key, Widget child}) {
+      Duration? duration,
+      required IconData icon,
+      Color? color,
+      Curve? curveAnim,
+      bool? useOpacity,
+      Key? key, required Widget child}) {
     return CircleFloatingButton(
       items: items,
       radius: radius,
       position: Position.bottom,
       type: CircleType.complete,
-      duration: duration,
+      duration: duration ?? const Duration(microseconds: 100),
       buttonIcon: icon,
       buttonColor: color,
-      curve: curveAnim,
-      opacity: useOpacity,
+      curve: curveAnim ??  Curves.elasticOut,
+      opacity: useOpacity ?? false,
       key: key,
       child: child,
     );
   }
 
   factory CircleFloatingButton.semiCircle({
-    List<Widget> items,
-    Key key,
+    required List<Widget> items,
+    Key? key,
     double radius = 100,
-    Position position,
-    Duration duration,
-    IconData icon,
-    Color color,
-    Curve curveAnim,
-    bool useOpacity,
-    Widget child
+    Position? position,
+    Duration duration = const Duration(milliseconds: 100),
+    required IconData icon,
+    Color? color,
+    Curve? curveAnim ,
+    bool? useOpacity,
+    Widget? child
   }) {
     return CircleFloatingButton(
       items: items,
       radius: radius,
-      position: position,
+      position: position ?? Position.right,
       type: CircleType.semi,
       duration: duration,
       buttonIcon: icon,
       buttonColor: color,
-      curve: curveAnim,
-      opacity: useOpacity,
+      curve: curveAnim = Curves.elasticOut,
+      opacity: useOpacity ?? true,
       key: key,
       child: child,
     );
@@ -115,7 +116,7 @@ class CircleFloatingButton extends StatefulWidget {
 }
 
 class CircleFloatingButtonState extends State<CircleFloatingButton> {
-  BlocController _bloc;
+  BlocController _bloc = BlocController();
   GlobalKey containerKey = GlobalKey();
 
   close() {
@@ -129,7 +130,6 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
   @override
   initState() {
     super.initState();
-    _bloc = BlocController();
   }
 
   Offset _getOffset(double angle, double radius) {
@@ -139,8 +139,8 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
     return Offset(x, y);
   }
 
-  getRotatePosition(Position postion) {
-    switch (postion) {
+  getRotatePosition(Position position) {
+    switch (position) {
       case Position.right:
         return 90;
       case Position.bottom:
@@ -158,15 +158,11 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
     switch (widget.type) {
       case CircleType.semi:
         return semi();
-        break;
       case CircleType.complete:
         return complete();
-        break;
       case CircleType.quarterPart:
         return quarterPart();
     }
-
-    return Container();
   }
 
   Widget quarterPart() {
@@ -175,7 +171,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
       width: 60 + widget.radius,
       height: 60 + widget.radius,
       child: Stack(
-        overflow: Overflow.visible,
+        clipBehavior: Clip.none,
         children: List.generate(
           quantity,
           (index) {
@@ -203,7 +199,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
             Positioned(
               top: widget.radius,
               left: widget.radius,
-              child:  widget.child != null 
+              child:  widget.child != null
               ? Material(
                   child: InkWell(
                     child: widget.child,
@@ -218,7 +214,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
                 onPressed: () {
                   _bloc.toggle();
                 },
-                child: Icon(widget.buttonIcon ?? Icons.add),
+                child: Icon(widget.buttonIcon),
               ),
             ),
           ),
@@ -230,7 +226,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
     var quantity = widget.items.length;
     return Container(
       child: Stack(
-        overflow: Overflow.visible,
+        clipBehavior: Clip.none,
         children: List.generate(
           quantity,
           (index) {
@@ -276,7 +272,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
                   onPressed: () {
                     _bloc.toggle();
                   },
-                  child: Icon(widget.buttonIcon ?? Icons.add),
+                  child: Icon(widget.buttonIcon),
                 ),
               ),
             ),
@@ -290,8 +286,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
 
     return Container(
       child: Stack(
-        overflow: Overflow.visible,
-        children: List.generate(
+        clipBehavior: Clip.none, children: List.generate(
           quantity,
           (index) {
             var angulo = (180) / (quantity - 1) * (index);
@@ -333,7 +328,7 @@ class CircleFloatingButtonState extends State<CircleFloatingButton> {
                 onPressed: () {
                   _bloc.toggle();
                 },
-                child: Icon(widget.buttonIcon ?? Icons.add),
+                child: Icon(widget.buttonIcon),
               ),
             ),
           ),

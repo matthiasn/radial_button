@@ -1,7 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 
 class BlocController {
-  var _controller = BehaviorSubject.seeded(false);
+  BehaviorSubject<bool> _controller = BehaviorSubject.seeded(false);
 
   Stream<bool> get opened => _controller.stream;
 
@@ -12,7 +12,7 @@ class BlocController {
   }
 
   void toggle() {
-    _controller.add(!_controller.value);
+    _controller.add(!(_controller.value ?? true));
   }
 
   void close(){

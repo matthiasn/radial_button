@@ -14,14 +14,14 @@ class CircleButton extends StatefulWidget {
   final bool opacity;
 
   CircleButton(
-      {Key key,
-      this.finalTop,
-      this.finalRight,
-      this.initState,
-      this.bloc,
+      {Key? key,
+      required this.finalTop,
+      required this.finalRight,
+      required this.initState,
+      required this.bloc,
       this.duration = const Duration(milliseconds: 300),
-      this.widget,
-      this.curve,
+      required this.widget,
+      required this.curve,
       this.opacity = true})
       : super(key: key);
 
@@ -52,10 +52,13 @@ class _CircleButtonState extends State<CircleButton>
       animation: positionAnimation,
       child: widget.widget,
       builder: (context, child) {
+        if( child == null ) {
+          return Container();
+        }
         return Positioned(
           top: positionAnimation.value.dy,
           left: positionAnimation.value.dx,
-          child: widget.opacity == null || widget.opacity
+          child: widget.opacity
               ? Opacity(
                   opacity: controller.value,
                   child: child,
