@@ -12,10 +12,11 @@ class BlocController {
   }
 
   void toggle() {
-    _controller.add(!(_controller.value ?? true));
+    _controller.add(!(_controller.value));
+    Future.delayed(const Duration(seconds: 5)).then((_) => close());
   }
 
-  void close(){
-	  _controller.add(false);
+  void close() {
+    _controller.add(false);
   }
 }
